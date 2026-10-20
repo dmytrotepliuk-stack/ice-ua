@@ -1,7 +1,7 @@
 name: Daily hockey statistics refresh
 on:
   schedule:
-    - cron: '15 6 * * *' # UTC; GitHub scheduled workflows may be delayed
+    - cron: '15 6 * * *'
   workflow_dispatch:
 permissions:
   contents: write
@@ -13,15 +13,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Update licensed statistics feed
+      - name: Fetch NHL statistics
         env:
-          STATISTICS_FEED_URL: ${{ secrets.STATISTICS_FEED_URL }}
-          STATISTICS_FEED_TOKEN: ${{ secrets.STATISTICS_FEED_TOKEN }}
+          HOCKEY_SEASON: '20262027'
         run: node scripts/sync.mjs
-      - name: Commit changes when present
+      - name: Commit updated data
         run: |
           git add data/players.json
           if ! git diff --cached --quiet; then
-            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Update hockey statistics'
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Refresh hockey statistics'
             git push
           fi
