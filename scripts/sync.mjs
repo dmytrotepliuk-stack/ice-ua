@@ -56,4 +56,4 @@ const nhl=[...await nhlReport('Нападник'),...await nhlReport('Ворот
 const seen=new Set();const players=[...nhl,...supplement].filter(p=>{if(seen.has(p.id))return false;seen.add(p.id);return true;});
 const payload={meta:{season:seasonLabel,mode:'live',source:'NHL Stats API + ручна верифікація європейських ліг',coverage:'Часткове покриття: NHL та окремі вручну перевірені ліги; не всі українські хокеїсти',updatedAt:now,nhlRecords:nhl.length,manualRecords:supplement.length,rightsNotice:'Публічний доступ до API не дорівнює ліцензії на повторну публікацію; перед публічним запуском перевірте умови NHL.'},players};
 await fs.writeFile(new URL('data/players.json',ROOT),JSON.stringify(payload,null,2)+'\n');
-console.log(`Saved ${players.length} records (${nhl.length} NHL; ${suppleme
+console.log(`Saved ${players.length} records (${nhl.length} NHL; ${suppleme}
